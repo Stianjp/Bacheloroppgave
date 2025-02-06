@@ -1,0 +1,2 @@
+# Bacheloroppgave
+Dette er bacheloroppgaven
