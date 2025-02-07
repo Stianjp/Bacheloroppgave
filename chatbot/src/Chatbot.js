@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { askChatbot } from "./langchainChatbot";
 import "./Styling/Chatbot.css"; // Importer CSS-filen
+import logo from "./media/logo.png"; // Importer logo
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
@@ -9,6 +10,13 @@ const Chatbot = () => {
   const [consent, setConsent] = useState(null); // null = ikke valgt enda
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Henter dagens dato automatisk i norsk format
+  const today = new Date().toLocaleDateString("no-NO", {
+    weekday: "long",
+    day: "numeric",
+    month: "long"
+  });
 
   // Funksjon for å håndtere samtykkevalg
   const handleConsent = (userConsent) => {
@@ -39,17 +47,25 @@ const Chatbot = () => {
     setLoading(false);
   };
 
+  {/* Header med logo og dato */}
   return (
-    <div className="chatbot-container">
+    <div className="chat-container">
+      {/* Header med logo og dato */}
+      <header className="chat-header">
+        <img src={logo} alt="MeyerHaugen" className="logo" />
+        <p className="chat-date">{today}</p> 
+      </header>
+
+      {/* Endret til bobler: Chatmeldinger */}
       <div className="chatbot-messages">
         {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.sender}`}>
-            <b>{msg.sender === "user" ? "Du" : "Bot"}:</b> {msg.text}
+          <div key={index} className={`chat-bubble ${msg.sender}`}>
+            {msg.text}
           </div>
         ))}
       </div>
 
-      {/* Vis samtykkevalg først */}
+      {/* Endret spacing i css: Vis samtykkevalg først */}
       {consent === null && (
         <div className="consent-buttons">
           <button className="accept" onClick={() => handleConsent(true)}>Godta</button>
@@ -57,18 +73,19 @@ const Chatbot = () => {
         </div>
       )}
 
-      {/* Vis inputfelt kun hvis samtykke er valgt */}
+      {/* Endret classname, la til placeholder, endret til pil: Vis inputfelt kun hvis samtykke er valgt */}
       {consent !== null && (
-        <div className="chatbot-input">
+        <div className="chat-input">
           <input
             type="text"
+            placeholder="Skriv melding her" 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && sendMessage()}
             disabled={loading}
           />
           <button onClick={sendMessage} disabled={loading}>
-            {loading ? "Sender..." : "Send"}
+            ➤
           </button>
         </div>
       )}
