@@ -7,28 +7,47 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     { text: "Hei! Ønsker du å godta lagring av samtalen for bedre analyse?", sender: "bot" }
   ]);
-  const [consent, setConsent] = useState(null); // null = ikke valgt enda
+  const [consent, setConsent] = useState(null);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [currentStep, setCurrentStep] = useState(0);
 
-  // Henter dagens dato automatisk i norsk format
+  // Henter dagens dato i norsk format
   const today = new Date().toLocaleDateString("no-NO", {
     weekday: "long",
     day: "numeric",
     month: "long"
   });
 
-  // Funksjon for å håndtere samtykkevalg
-  const handleConsent = (userConsent) => {
+  // Liste over spørsmål chatboten skal stille
+  const questions = [
+    { key: "name", text: "Hva heter du?" },
+    { key: "age", text: "Hvor gammel er du?" },
+    { key: "jobStatus", text: "Er du i fast jobb, søker jobb, eller er du usikker på hva du vil?" }
+  ];
+
+  // Håndter samtykkevalg og start første spørsmål
+  const handleConsent = async (userConsent) => {
     setConsent(userConsent);
     setMessages((prev) => [
       ...prev,
       { text: userConsent ? "Ja, jeg godtar." : "Nei, jeg ønsker ikke lagring.", sender: "user" },
-      { text: "Takk for tilbakemeldingen! Hvordan kan jeg hjelpe deg i dag?", sender: "bot" }
+      { text: "Takk for tilbakemeldingen!", sender: "bot" },
+      { text: questions[0].text, sender: "bot" }
     ]);
+
+    // Start lagring av JSON hvis samtykke er gitt
+    if (userConsent) {
+      await fetch("http://localhost:5001/api/saveData", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ consent: userConsent, data: {} })
+      });
+    }
   };
 
-  // Funksjon for å sende meldinger til GPT
+  // Håndter brukerens svar
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
@@ -36,27 +55,49 @@ const Chatbot = () => {
     const userMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
 
-    try {
+    if (currentStep < questions.length) {
+      const updatedUserData = { ...userData, [questions[currentStep].key]: input };
+      setUserData(updatedUserData);
+      setCurrentStep(currentStep + 1);
+
+      if (currentStep + 1 < questions.length) {
+        setMessages((prev) => [...prev, { text: questions[currentStep + 1].text, sender: "bot" }]);
+      } else {
+        const summary = `
+          Takk for informasjonen! Her er en oppsummering:
+          - Navn: ${updatedUserData.name}
+          - Alder: ${updatedUserData.age}
+          - Jobbsituasjon: ${updatedUserData.jobStatus}
+          
+          Nå kan vi gå videre og kartlegge dine styrker. Hva vil du vite mer om?
+        `;
+        setMessages((prev) => [...prev, { text: summary, sender: "bot" }]);
+
+        // Lagre data i JSON-filen
+        if (consent) {
+          await fetch("http://localhost:5001/api/saveData", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ consent, data: updatedUserData })
+          });
+        }
+      }
+    } else {
       const botResponse = await askChatbot(input);
       setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
-    } catch (error) {
-      console.error("Feil ved API-kall:", error);
     }
 
     setInput("");
     setLoading(false);
   };
 
-  {/* Header med logo og dato */}
   return (
     <div className="chat-container">
-      {/* Header med logo og dato */}
       <header className="chat-header">
         <img src={logo} alt="MeyerHaugen" className="logo" />
-        <p className="chat-date">{today}</p> 
+        <p className="chat-date">{today}</p>
       </header>
 
-      {/* Endret til bobler: Chatmeldinger */}
       <div className="chatbot-messages">
         {messages.map((msg, index) => (
           <div key={index} className={`chat-bubble ${msg.sender}`}>
@@ -65,7 +106,6 @@ const Chatbot = () => {
         ))}
       </div>
 
-      {/* Endret spacing i css: Vis samtykkevalg først */}
       {consent === null && (
         <div className="consent-buttons">
           <button className="accept" onClick={() => handleConsent(true)}>Godta</button>
@@ -73,12 +113,11 @@ const Chatbot = () => {
         </div>
       )}
 
-      {/* Endret classname, la til placeholder, endret til pil: Vis inputfelt kun hvis samtykke er valgt */}
       {consent !== null && (
         <div className="chat-input">
           <input
             type="text"
-            placeholder="Skriv melding her" 
+            placeholder="Skriv melding her"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && sendMessage()}
