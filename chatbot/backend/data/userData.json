@@ -1,11 +1,10 @@
 [
   {
-    "timestamp": "2025-02-07T12:31:52.913Z"
-  },
-  {
-    "timestamp": "2025-02-07T12:31:59.643Z",
+    "timestamp": "2025-02-07T14:19:28.075Z",
     "name": "Stian",
     "age": "27",
-    "jobStatus": "Fast jobb"
+    "jobStatus": "Søker jobb",
+    "goal": "Finne en jobb",
+    "category": "a"
   }
 ]
