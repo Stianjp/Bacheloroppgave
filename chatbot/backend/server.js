@@ -23,6 +23,31 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.post("/api/chat", async (req, res) => {
+  try {
+    const { message, prompt } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: "Melding mangler" });
+    }
+
+    const openaiResponse = await openai.chat.completions.create({
+      model: "gpt-4", // Eller "gpt-3.5-turbo" hvis du vil bruke en annen
+      messages: [
+        { role: "system", content: prompt || "Du er en hjelpsom assistent." },
+        { role: "user", content: message }
+      ]
+    });
+
+    const botResponse = openaiResponse.choices[0].message.content;
+    res.json({ response: botResponse }); // ✅ Sørg for at backend returnerer JSON
+
+  } catch (error) {
+    console.error("Feil i /chat:", error);
+    res.status(500).json({ error: "Noe gikk galt med ChatGPT" });
+  }
+});
+
 const PORT = process.env.PORT || 5001;
 const filePath = path.join("data", "userData.json");
 
