@@ -104,3 +104,35 @@
   align-items: center;
   justify-content: center;
 }
+
+.consent-buttons{
+  display: grid;
+  grid-auto-flow: column;
+  gap: 10px;
+  margin: 10px;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.accept{
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.decline{
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.accept:hover{
+  background-color:#ddd;
+}
+
+.decline:hover{
+  background-color: #ddd;
+}
