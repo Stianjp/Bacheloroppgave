@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { askChatbot } from "./langchainChatbot";
-import "./Styling/Chatbot.css";
-import logo from "./media/logo.png";
+import { askChatbot } from "../utils/langchainChatbot";
+import "../Styling/Chatbot.css";
+import logo from "../media/logo.png";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
