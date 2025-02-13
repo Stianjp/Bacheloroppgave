@@ -2,33 +2,47 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
+import fs from "fs";
+import path from "path";
+import analyzeUserRouter from "./api/analyzeUser.js";
+import clearDataRouter from "./api/clearData.js";
+import saveDataRouter from "./api/saveData.js"; // ✅ Importer saveData.js
 
-dotenv.config(); // Må være før OpenAI-klienten
+dotenv.config();
 
-const openai = new OpenAI({ // ✅ Definer `openai`-objektet riktig
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
+const filePath = path.join("data", "userData.json");
 
-app.post("/chat", async (req, res) => {
-  try {
-    const { message } = req.body;
+// **Sørg for at `data/`-mappen eksisterer**
+if (!fs.existsSync("data")) {
+  fs.mkdirSync("data");
+}
 
-    const completion = await openai.chat.completions.create({ // ✅ Bruk `openai`-objektet riktig
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
-    });
+// **Tømmer `userData.json` ved serverstart**
+if (fs.existsSync(filePath)) {
+  fs.writeFileSync(filePath, "[]", "utf-8");
+  console.log("✅ userData.json tømt ved serverstart");
+} else {
+  fs.writeFileSync(filePath, "[]", "utf-8");
+  console.log("✅ userData.json opprettet og tømt ved serverstart");
+}
 
-    res.json({ response: completion.choices[0].message.content });
-  } catch (error) {
-    console.error("❌ Feil i OpenAI API:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
+// 🔹 **Bruk API-ruter**
+app.use("/api/analyzeUser", analyzeUserRouter);
+app.use("/api/clearData", clearDataRouter);
+app.use("/api/saveData", saveDataRouter); // ✅ Legger til saveData.js
 
 app.listen(PORT, () => console.log(`✅ Server kjører på port ${PORT}`));
