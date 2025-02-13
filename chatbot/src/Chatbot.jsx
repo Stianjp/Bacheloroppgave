@@ -155,7 +155,7 @@ const Chatbot = () => {
             placeholder="Skriv melding her"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             disabled={loading}
           />
           <button onClick={sendMessage} disabled={loading}>
