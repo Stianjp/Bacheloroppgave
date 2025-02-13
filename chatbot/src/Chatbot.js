@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { askChatbot } from "./langchainChatbot";
 import "./Styling/Chatbot.css"; // Importer CSS-filen
 import logo from "./media/logo.png"; // Importer logo
@@ -10,6 +10,14 @@ const Chatbot = () => {
   const [consent, setConsent] = useState(null); // null = ikke valgt enda
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null); // Ref to track chat end
+
+   // Auto-scroll to the latest message
+   useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [messages]);
 
   // Henter dagens dato automatisk i norsk format
   const today = new Date().toLocaleDateString("no-NO", {
@@ -46,6 +54,8 @@ const Chatbot = () => {
     setLoading(false);
   };
 
+
+
   {/* Header med logo og dato */}
   return (
     <div className="chat-container">
@@ -55,13 +65,14 @@ const Chatbot = () => {
         <p className="chat-date">{today}</p> 
       </header>
 
-      {/* Endret til bobler: Chatmeldinger */}
-      <div className="chatbot-messages">
+      {/* Chat Messages with Auto-Scroll */}
+      <div className="chatbot-messages" ref={messagesEndRef}>
         {messages.map((msg, index) => (
           <div key={index} className={`chat-bubble ${msg.sender}`}>
             {msg.text}
           </div>
         ))}
+        <div ref={messagesEndRef} /> {/* This is the target for scrolling */}
       </div>
 
       {/* Endret spacing i css: Vis samtykkevalg først */}

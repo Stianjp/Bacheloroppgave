@@ -1,6 +1,7 @@
 /* Hovedcontainer */
 .chat-container {
-  width: 400px;
+  width: 600px;
+  height: 700px; /* Set a fixed height for the entire chat container */
   margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -16,6 +17,7 @@
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  flex-shrink: 0; /* Prevents the header from shrinking */
 }
 
 .logo {
@@ -29,64 +31,44 @@
 }
 
 /* Chat-meldinger */
-.chat-messages {
-  height: 50vh;
-  overflow-y: auto;
-  padding: 15px;
+.chatbot-messages {
+  flex-grow: 1; /* This makes the chat messages area take up remaining space */
+  overflow-y: auto;   /* Enables vertical scrolling */
+  padding: 10px;
   display: flex;
   flex-direction: column;
 }
 
-/* Generell styling for chatbobler */
+/* Optional: Smooth scrolling for better UX */
+.chatbot-messages::-webkit-scrollbar {
+  width: 6px;
+}
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
 .chat-bubble {
-  max-width: 75%;
-  padding: 10px 15px;
+  max-width: 80%;
+  padding: 10px;
   border-radius: 15px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  position: relative;
-  display: flex;
-  align-items: center;
+  margin: 5px 0;
 }
 
-/* Bot-meldinger */
 .chat-bubble.bot {
-  background-color: #df5823;
-  color: white;
   align-self: flex-start;
-  border-radius: 15px 15px 15px 0;
-  padding-left: 30px;
+  background-color: #e0e0e0;
+  color: #333;
 }
 
-/* Bruker-meldinger */
 .chat-bubble.user {
-  background-color: #ddd;
-  color: black;
   align-self: flex-end;
-  border-radius: 15px 15px 0 15px;
-  padding-right: 30px;
+  background-color: #ff5100;
+  color: white;
 }
-
-/* Sirkel foran bot-meldinger */
-.chat-bubble.bot::before {
-  content: "";
-  width: 15px;
-  height: 15px;
-  background-color: #ddd;
-  border-radius: 50%;
-  position: absolute;
-  left: 10px;
-}
-
-/* Sirkel foran bruker-meldinger */
-.chat-bubble.user::after {
-  content: "";
-  width: 15px;
-  height: 15px;
-  background-color: #df5823;
-  border-radius: 50%;
-  position: absolute;
-  right: 10px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Inputfelt */
@@ -96,7 +78,7 @@
   border-top: 1px solid #ddd;
   background: white;
   align-items: center;
-  position: relative;
+  flex-shrink: 0; /* Prevents the input area from shrinking */
 }
 
 .chat-input input {
@@ -109,7 +91,7 @@
 }
 
 .chat-input button {
-  background: #f5a282;
+  background: #ff5100;
   border: none;
   width: 35px;
   height: 35px;
