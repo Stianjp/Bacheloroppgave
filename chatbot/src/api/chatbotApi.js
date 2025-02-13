@@ -1,5 +1,23 @@
 // chatbotApi.js
 
+/*
+    Hva: Denne filen inneholder funksjoner for å kommunisere med backend-serveren.
+
+    Hvordan: Denne filen eksporterer tre funksjoner:
+    - `clearBackendData` tømmer all brukerdata i backend.
+    - `saveUserData` lagrer brukerdata i backend.
+    - `analyzeUserData` analyserer brukerdata i backend.
+    Dette gjøres ved å sende POST-forespørsler til serveren.
+    Og slik kan vi lagre og analysere brukerdata i backend.
+    Når brukeren samtykker, lagres dataene i en JSON-fil.
+    Og ved å analysere dataene, kan vi bestemme en samtalekategori.
+    Slik at riktig oppfølgingsspørsmål kan stilles til brukeren, og at 
+    vi kan prompte chatGPT til å generere relevante svar.
+
+    Hvorfor: For å lagre og analysere brukerdata i backend.
+
+*/
+
 const API_BASE_URL = "http://localhost:5001/api";
 
 export const clearBackendData = async () => {
