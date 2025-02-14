@@ -96,9 +96,16 @@ const Chatbot = () => {
 
       <div className="chatbot-messages">
         {messages.map((msg, index) => (
-          <div key={index} className={`chat-bubble ${msg.sender}`}>
-            {msg.text}
-          </div>
+          <div key={index} className={`chat-message ${msg.sender}`}>
+            {msg.sender === "bot" ? (
+              index === messages.length - 1 ? (
+                <img src={logo} alt="Bot" className="bot-avatar" />
+              ) : (
+                <div className="bot-avatar-placeholder"></div>
+              )
+            ) : null}
+            <div className={`chat-bubble ${msg.sender}`}>{msg.text}</div>
+          </div>        
         ))}
       </div>
 
@@ -116,7 +123,7 @@ const Chatbot = () => {
             placeholder="Skriv melding her"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             disabled={loading}
           />
           <button onClick={sendMessage} disabled={loading}>➤</button>
