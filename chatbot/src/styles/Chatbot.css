@@ -56,15 +56,22 @@
 }
 
 .chat-bubble.bot {
-  align-self: flex-start;
   background-color: #e0e0e0;
   color: #333;
+  align-self: flex-start;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
 }
 
 .chat-bubble.user {
-  align-self: flex-end;
   background-color: #ff5100;
   color: white;
+  align-self: flex-end;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
+  margin-right: 15px;
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
@@ -135,4 +142,28 @@
 
 .decline:hover{
   background-color: #ddd;
+}
+.chat-message {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Avstand mellom bilde og tekst */
+}
+
+.bot-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+/* Bot-meldinger */
+.chat-message.bot {
+  justify-content: flex-start;
+}
+/* Bruker-meldinger */
+.chat-message.user {
+  justify-content: flex-end;
+}
+.bot-avatar-placeholder {
+  width: 10px; /* Samme bredde som bot-avatar */
+  height: 35px;
+  visibility: hidden; /* Holder plassen, men skjuler elementet */
 }
