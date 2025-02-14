@@ -21,7 +21,7 @@
 }
 
 .logo {
-  width: 150px;
+  width: 400px;
 }
 
 .chat-date {
@@ -81,20 +81,21 @@
 /* Inputfelt */
 .chat-input {
   display: flex;
+  justify-content: space-between; /* Sørger for at elementene plasseres med maks avstand */
+  align-items: center;
   padding: 10px;
   border-top: 1px solid #ddd;
   background: white;
-  align-items: center;
   flex-shrink: 0; /* Prevents the input area from shrinking */
 }
 
 .chat-input input {
-  flex-grow: 1;
+  flex: 1; /* Lar input-feltet ta opp mest mulig plass */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 14px;
-  padding-right: 40px; /* Gir plass til send-knappen */
+  margin-right: 10px;
 }
 
 .chat-input button {
@@ -103,7 +104,6 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-left: -45px;
   color: white;
   cursor: pointer;
   font-size: 16px;
