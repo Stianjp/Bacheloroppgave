@@ -28,16 +28,13 @@ export const categoryResponses = {
   b: "Du vurderer å bytte karriere. Skal vi se på hvilke muligheter som kan passe for deg?",
   c: "Du ønsker å utvikle karrieren din. Vil du ha tips om videreutdanning eller nye ferdigheter?",
   d: "Du ønsker å finne din motivasjon. La oss utforske hva som inspirerer deg!",
-<<<<<<< HEAD
-=======
   e: "Målet ditt med denne samtalen var litt vanskelig å tyde, gjerne send litt mer utdypende informasjon",
->>>>>>> main
+
 };
 
 // 🔹 **Dynamiske prompts for ChatGPT basert på kategori**
 // Disse kan tilpasses for å gi bedre veiledning til brukeren
 export const chatgptPrompts = {
-<<<<<<< HEAD
   a: `
 Du er en erfaren **karriereveileder** som hjelper personer med jobbsøking. 
 Ditt mål er å guide personen til å forstå sine styrker, ferdigheter og hva som motiverer dem.
