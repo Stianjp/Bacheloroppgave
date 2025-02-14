@@ -24,8 +24,8 @@ router.post("/", async (req, res) => {
       Du er en AI-assistent som hjelper folk med karriereveiledning.
       En bruker har gitt følgende informasjon:
       
-
-      - Mål: ${goal}
+        - Jobbstatus: ${jobStatus}
+        - Mål: ${goal}
       
       Basert på målet til brukeren skal du kategorisere brukeren i én av følgende grupper:
       a: Jobbsøking
