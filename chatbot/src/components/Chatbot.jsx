@@ -4,6 +4,7 @@ import { initialMessage, questions, categoryResponses, chatgptPrompts } from "..
 import { clearBackendData, saveUserData, analyzeUserData } from "../api/chatbotApi";
 import "../styles/Chatbot.css";
 import logo from "../media/logo.png";
+import miniLogo from "../media/MH_logo.png";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([{ text: initialMessage, sender: "bot" }]);
@@ -116,7 +117,7 @@ useEffect(() => {
           <div key={index} className={`chat-message ${msg.sender}`}>
             {msg.sender === "bot" ? (
               index === messages.length - 1 ? (
-                <img src={logo} alt="Bot" className="bot-avatar" />
+                <img src={miniLogo} alt="Bot" className="bot-avatar" />
               ) : (
                 <div className="bot-avatar-placeholder"></div>
               )
