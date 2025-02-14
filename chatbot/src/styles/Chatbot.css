@@ -119,6 +119,10 @@
   gap: 15px; /* Avstand mellom knappene */
   margin: 20px auto; /* Sørger for at containeren også er sentrert */
   width: fit-content; /* Hindrer at containeren blir for bred */
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .accept, .decline {
