@@ -56,15 +56,22 @@
 }
 
 .chat-bubble.bot {
-  align-self: flex-start;
   background-color: #e0e0e0;
   color: #333;
+  align-self: flex-start;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
 }
 
 .chat-bubble.user {
-  align-self: flex-end;
   background-color: #ff5100;
   color: white;
+  align-self: flex-end;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
+  margin-right: 15px;
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
@@ -136,68 +143,27 @@
 .decline:hover{
   background-color: #ddd;
 }
-
-.typing-bubble {
-  align-self: flex-start;
-  background-color: #e0e0e0;
-  color: #333;
-  padding: 10px;
-  border-radius: 15px;
-  margin: 5px 0;
+.chat-message {
   display: flex;
-  gap: 4px;
-  width: 50px;
-  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Avstand mellom bilde og tekst */
 }
 
-.typing-bubble span {
-  width: 8px;
-  height: 8px;
-  background-color: #888;
+.bot-avatar {
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  display: inline-block;
-  animation: typingAnimation 1.5s infinite;
 }
-
-.typing-bubble span:nth-child(2) {
-  animation-delay: 0.2s;
+/* Bot-meldinger */
+.chat-message.bot {
+  justify-content: flex-start;
 }
-
-.typing-bubble span:nth-child(3) {
-  animation-delay: 0.4s;
+/* Bruker-meldinger */
+.chat-message.user {
+  justify-content: flex-end;
 }
-
-@keyframes typingAnimation {
-  0% { opacity: 0.3; transform: translateY(0px); }
-  50% { opacity: 1; transform: translateY(-3px); }
-  100% { opacity: 0.3; transform: translateY(0px); }
+.bot-avatar-placeholder {
+  width: 10px; /* Samme bredde som bot-avatar */
+  height: 35px;
+  visibility: hidden; /* Holder plassen, men skjuler elementet */
 }
-
-.typing-bubble {
-  display: flex;
-  gap: 4px;
-  padding: 10px;
-  background: #e0e0e0;
-  border-radius: 15px;
-  width: 50px;
-  align-self: flex-start;
-}
-
-.typing-bubble span {
-  width: 8px;
-  height: 8px;
-  background: gray;
-  border-radius: 50%;
-  animation: typingAnimation 1.5s infinite ease-in-out;
-}
-
-.typing-bubble span:nth-child(1) { animation-delay: 0s; }
-.typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
-.typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes typingAnimation {
-  0%, 100% { opacity: 0.3; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-5px); }
-}
-
-
