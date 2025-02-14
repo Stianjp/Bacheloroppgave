@@ -14,6 +14,7 @@ const Chatbot = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [category, setCategory] = useState(null);
   const [chatgptActive, setChatgptActive] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     clearBackendData();
@@ -32,46 +33,52 @@ const Chatbot = () => {
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
-  
+
     const userMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
-  
-    if (chatgptActive) {
-      // Hent relevant prompt basert på brukerens kategori
-      const chatGptPrompt = chatgptPrompts[category] || "Hjelp brukeren med karriereveiledning basert på tidligere svar.";
-      
-      // Send prompt + brukerens melding til ChatGPT
-      const botResponse = await askChatbot(input, chatGptPrompt);
-      setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
-    } else if (currentStep < questions.length) {
-      // Fortsett med vanlige spørsmål
-      const updatedUserData = { ...userData, [questions[currentStep].key]: input };
-      setUserData(updatedUserData);
-  
-      if (currentStep + 1 < questions.length) {
-        setMessages((prev) => [...prev, { text: questions[currentStep + 1].text, sender: "bot" }]);
-      } else {
-        const summary = `
-          Takk for informasjonen! Her er en oppsummering:
-          - Navn: ${updatedUserData.name}
-          - Alder: ${updatedUserData.age}
-          - Jobbsituasjon: ${updatedUserData.jobStatus}
-          - Mål: ${updatedUserData.goal}
-          
-          Nå analyserer jeg informasjonen din for å hjelpe deg videre...
-        `;
-        setMessages((prev) => [...prev, { text: summary, sender: "bot" }]);
-  
-        await saveUserData(consent, updatedUserData);
-        analyzeCategory(updatedUserData);
-      }
-  
-      setCurrentStep(currentStep + 1);
-    }
-  
     setInput("");
-    setLoading(false);
-  };
+
+    setIsTyping(true); // Vis typing-boblen
+
+    setTimeout(async () => {
+        let botResponse = "";
+
+        if (chatgptActive) {
+            const chatGptPrompt = chatgptPrompts[category] || "Hjelp brukeren med karriereveiledning basert på tidligere svar.";
+            botResponse = await askChatbot(input, chatGptPrompt);
+        } else if (currentStep < questions.length) {
+            const updatedUserData = { ...userData, [questions[currentStep].key]: input };
+            setUserData(updatedUserData);
+
+            if (currentStep + 1 < questions.length) {
+                botResponse = questions[currentStep + 1].text;
+            } else {
+                botResponse = `
+                    Takk for informasjonen! Her er en oppsummering:
+                    - Navn: ${updatedUserData.name}
+                    - Alder: ${updatedUserData.age}
+                    - Jobbsituasjon: ${updatedUserData.jobStatus}
+                    - Mål: ${updatedUserData.goal}
+
+                    Nå analyserer jeg informasjonen din for å hjelpe deg videre...
+                `;
+
+                await saveUserData(consent, updatedUserData);
+                analyzeCategory(updatedUserData);
+            }
+
+            setCurrentStep(currentStep + 1);
+        }
+
+        setTimeout(() => {
+            setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
+            setIsTyping(false); // Skjul typing-boblen etter at meldingen er lagt til
+            setLoading(false);
+        }, 1000); // Gir en liten ekstra forsinkelse før meldingen vises
+
+    }, 500); // Simulerer at chatboten "skriver" i 1,5 sekunder
+};
+
 
   
   const analyzeCategory = async (userData) => {
@@ -96,11 +103,27 @@ const Chatbot = () => {
 
       <div className="chatbot-messages">
         {messages.map((msg, index) => (
-          <div key={index} className={`chat-bubble ${msg.sender}`}>
-            {msg.text}
-          </div>
+          <div key={index} className={`chat-message ${msg.sender}`}>
+            {msg.sender === "bot" ? (
+              index === messages.length - 1 ? (
+                <img src={logo} alt="Bot" className="bot-avatar" />
+              ) : (
+                <div className="bot-avatar-placeholder"></div>
+              )
+            ) : null}
+            <div className={`chat-bubble ${msg.sender}`}>{msg.text}</div>
+          </div>        
         ))}
+
+        {isTyping && (
+          <div className="typing-bubble">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        )}
       </div>
+
 
       {consent === null && (
         <div className="consent-buttons">
@@ -116,7 +139,7 @@ const Chatbot = () => {
             placeholder="Skriv melding her"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             disabled={loading}
           />
           <button onClick={sendMessage} disabled={loading}>➤</button>
