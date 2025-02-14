@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "timestamp": "2025-02-14T12:20:51.256Z",
+    "name": "Dennis",
+    "age": "23",
+    "jobStatus": "fast jobb",
+    "goal": "vet ikke ",
+    "category": "e"
+  }
+]
