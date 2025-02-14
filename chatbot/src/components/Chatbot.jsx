@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { askChatbot } from "../utils/langchainChatbot";
 import { initialMessage, questions, categoryResponses, chatgptPrompts } from "../data/chatbotPrompts";
 import { clearBackendData, saveUserData, analyzeUserData } from "../api/chatbotApi";
@@ -15,6 +15,8 @@ const Chatbot = () => {
   const [category, setCategory] = useState(null);
   const [chatgptActive, setChatgptActive] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
 
   useEffect(() => {
     clearBackendData();
@@ -79,8 +81,16 @@ const Chatbot = () => {
     }, 500); // Simulerer at chatboten "skriver" i 1,5 sekunder
 };
 
+const scrollToBottom = () => {
+  if (messagesEndRef.current) {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
-  
+useEffect(() => {
+  scrollToBottom();
+}, [messages]);
+
   const analyzeCategory = async (userData) => {
     const result = await analyzeUserData(userData);
     setCategory(result.category);
@@ -122,6 +132,8 @@ const Chatbot = () => {
             <span></span>
           </div>
         )}
+        
+        <div ref={messagesEndRef} />
       </div>
 
 
