@@ -1,12 +1,9 @@
 // chatbotPrompts.js
 
 /*
-    Hva: 
-
-    Hvorfor:
-
-    Hvordan: 
-
+    Hva: Denne filen inneholder statiske tekster og dynamiske prompts for ChatGPT.
+    Hvorfor: For å gi veiledning til brukeren og til AI-assistenten.
+    Hvordan: Filen eksporterer statiske tekster som spørsmål og svaralternativer.
 */
 // chatbotPrompts.js
 
