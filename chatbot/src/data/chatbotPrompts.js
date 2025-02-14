@@ -10,26 +10,30 @@
 */
 // chatbotPrompts.js
 
-export const initialMessage = "Hei! Ønsker du å godta lagring av samtalen for bedre analyse?";
+export const initialMessage =
+  "Hei! Ønsker du å godta lagring av samtalen for bedre analyse?";
 
 export const questions = [
   { key: "name", text: "Hva heter du?" },
   { key: "age", text: "Hvor gammel er du?" },
-  { key: "jobStatus", text: "Er du i fast jobb, søker jobb, eller er du usikker på hva du vil?" },
-  { key: "goal", text: "Hva er målet ditt med denne samtalen?" }
+  {
+    key: "jobStatus",
+    text: "Er du i fast jobb, søker jobb, eller er du usikker på hva du vil?",
+  },
+  { key: "goal", text: "Hva er målet ditt med denne samtalen?" },
 ];
 
 export const categoryResponses = {
   a: "Min analyse tyder på at du er i jobbsøking. Kan du fortelle meg om hvilke stillinger og erfaring du har fra før?",
   b: "Du vurderer å bytte karriere. Skal vi se på hvilke muligheter som kan passe for deg?",
   c: "Du ønsker å utvikle karrieren din. Vil du ha tips om videreutdanning eller nye ferdigheter?",
-  d: "Du ønsker å finne din motivasjon. La oss utforske hva som inspirerer deg!"
+  d: "Du ønsker å finne din motivasjon. La oss utforske hva som inspirerer deg!",
 };
 
 // 🔹 **Dynamiske prompts for ChatGPT basert på kategori**
 // Disse kan tilpasses for å gi bedre veiledning til brukeren
 export const chatgptPrompts = {
-    a: `
+  a: `
 Du er en erfaren **karriereveileder** og har mottatt en henvendelse fra en person 
 som enten er uten jobb eller ser etter nye muligheter.
 
@@ -92,7 +96,7 @@ men er usikker på hvordan de skal komme videre.
 **Start samtalen med:**  
 *"Hva er det neste steget du ønsker å ta i karrieren din? Har du tenkt på hvilke ferdigheter du vil utvikle?"*
   `,
-  d:`
+  d: `
 Du er en **coach som hjelper folk med å finne sin motivasjon**. Personen du snakker med 
 føler seg usikker på hva som inspirerer dem i arbeidslivet.
 
@@ -109,5 +113,5 @@ føler seg usikker på hva som inspirerer dem i arbeidslivet.
 
 **Start samtalen med:**  
 *"Hva gir deg mest energi i løpet av en arbeidsdag, enten på jobb eller i andre aktiviteter?"*
-  `
+  `,
 };
