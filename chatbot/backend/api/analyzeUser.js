@@ -27,7 +27,8 @@ router.post("/", async (req, res) => {
         - Jobbstatus: ${jobStatus}
         - Mål: ${goal}
       
-      Basert på målet til brukeren skal du kategorisere brukeren i én av følgende grupper:
+      hvis jobbstatus til brukeren søker jobb er naturligvis svaret 'a' med mindre det er motivasjonen som er problemet
+      Basert på målet og nåværende jobbstatus til brukeren skal du kategorisere brukeren i én av følgende grupper:
       a: Jobbsøking
       b: Bytte karriere
       c: Karriereutvikling
