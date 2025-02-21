@@ -8,7 +8,7 @@
 // chatbotPrompts.js
 
 export const initialMessage =
-  "Hei! Ønsker du å godta lagring av samtalen for bedre analyse?";
+  'Hei! Velkommen til MeyerHaugen sin karriereveilder. Vi starter først med å kartlegge litt data om hvem du er deretter skal jeg prøve mitt beste med å gi deg en reflektiv samtale som kan hjelpe deg med dine karrieremuligheter. Ønsker du å godta lagring av samtalen for bedre analyse?';
 
 export const questions = [
   { key: "name", text: "Hva heter du?" },
