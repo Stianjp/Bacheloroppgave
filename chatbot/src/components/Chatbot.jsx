@@ -16,6 +16,7 @@ const Chatbot = () => {
   const [category, setCategory] = useState(null);
   const [chatgptActive, setChatgptActive] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const Chatbot = () => {
     const userMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    inputRef.current.style.height = "30px"; // Reset høyde til én linje etter sending
 
     setIsTyping(true);
 
@@ -76,7 +78,10 @@ const Chatbot = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+    if (inputRef.current) {
+      inputRef.current.focus(); // Autofokus på inputfeltet
+    }
+  }, [messages]);  
 
   const analyzeCategory = async (userData) => {
     const result = await analyzeUserData(userData);
@@ -89,7 +94,13 @@ const Chatbot = () => {
     setLoading(false);
     setIsTyping(false);
   };
-
+  
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    e.target.style.height = "30px"; // Reset høyde før justering
+    e.target.style.height = `${e.target.scrollHeight}px`; // Juster til innholdets høyde
+  };
+  
   return (
     <div className="chat-container">
       <header className="chat-header">
@@ -133,13 +144,25 @@ const Chatbot = () => {
 
       {consent !== null && (
         <div className="chat-input">
-          <input
-            type="text"
-            placeholder="Skriv melding her"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            disabled={loading}
+          <textarea
+          ref={inputRef}
+          placeholder="Skriv melding her"
+          value={input}
+          onChange={handleInputChange} // Bruk ny funksjon for auto-resizing
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
+          disabled={loading}
+          rows={1} // Start med én rad
+          style={{
+            resize: "none",
+            minHeight: "30px",
+            maxHeight: "200px",
+            overflowY: "auto"
+          }}
           />
           <button onClick={sendMessage} disabled={loading}>➤</button>
         </div>

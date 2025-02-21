@@ -89,13 +89,15 @@
   flex-shrink: 0; /* Prevents the input area from shrinking */
 }
 
-.chat-input input {
+.chat-input textarea {
   flex: 1; /* Lar input-feltet ta opp mest mulig plass */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 14px;
   margin-right: 10px;
+  font-family: inherit; /* Bruk samme font som resten av UI-et */
+  font-weight: normal; /* Sikre at den ikke blir for tynn eller tykk */
 }
 
 .chat-input button {
