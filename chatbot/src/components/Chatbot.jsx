@@ -16,8 +16,6 @@ const Chatbot = () => {
   const [category, setCategory] = useState(null);
   const [chatgptActive, setChatgptActive] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [botResponseCount, setBotResponseCount] = useState(0);
-  const [summaryGenerated, setSummaryGenerated] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -37,7 +35,6 @@ const Chatbot = () => {
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
-
     const userMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
@@ -58,38 +55,17 @@ const Chatbot = () => {
           botResponse = questions[currentStep + 1].text;
         } else {
           await saveUserData(consent, updatedUserData);
-          analyzeCategory(updatedUserData);
+          await analyzeCategory(updatedUserData);
+          return; // Hindrer at en tom melding blir lagt til
         }
 
         setCurrentStep(currentStep + 1);
       }
 
-      if (botResponse) {
-        setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
-      }
-      
+      setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
       setIsTyping(false);
       setLoading(false);
-
-      setBotResponseCount((prevCount) => {
-        const newCount = prevCount + 1;
-        if (newCount === 10 && !summaryGenerated) {
-          generateSummary();
-        }
-        return newCount;
-      });
-    }, 1500);
-  };
-
-  const generateSummary = async () => {
-    if (summaryGenerated) return;
-    setSummaryGenerated(true);
-    setIsTyping(true);
-    const chatHistory = messages.map(msg => `${msg.sender}: ${msg.text}`).join("\n");
-    const summaryPrompt = `Oppsummer denne samtalen og gi veiledning basert på det som har blitt sagt:\n${chatHistory}`;
-    const summary = await askChatbot(summaryPrompt);
-    setMessages((prev) => [...prev, { text: summary, sender: "bot" }]);
-    setIsTyping(false);
+    }, 500);
   };
 
   const scrollToBottom = () => {
@@ -110,6 +86,8 @@ const Chatbot = () => {
     setMessages((prev) => [...prev, { text: nextMessage, sender: "bot" }]);
 
     setChatgptActive(true);
+    setLoading(false);
+    setIsTyping(false);
   };
 
   return (
@@ -132,7 +110,7 @@ const Chatbot = () => {
               )
             ) : null}
             <div className={`chat-bubble ${msg.sender}`}>{msg.text}</div>
-          </div>        
+          </div>
         ))}
 
         {isTyping && (
@@ -169,5 +147,4 @@ const Chatbot = () => {
     </div>
   );
 };
-
-export default Chatbot;
+  export default Chatbot;
