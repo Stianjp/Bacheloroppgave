@@ -21,7 +21,7 @@
 }
 
 .logo {
-  width: 150px;
+  width: 400px;
 }
 
 .chat-date {
@@ -56,15 +56,22 @@
 }
 
 .chat-bubble.bot {
-  align-self: flex-start;
   background-color: #e0e0e0;
   color: #333;
+  align-self: flex-start;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
 }
 
 .chat-bubble.user {
-  align-self: flex-end;
   background-color: #ff5100;
   color: white;
+  align-self: flex-end;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
+  margin-right: 15px;
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
@@ -74,20 +81,23 @@
 /* Inputfelt */
 .chat-input {
   display: flex;
+  justify-content: space-between; /* Sørger for at elementene plasseres med maks avstand */
+  align-items: center;
   padding: 10px;
   border-top: 1px solid #ddd;
   background: white;
-  align-items: center;
   flex-shrink: 0; /* Prevents the input area from shrinking */
 }
 
-.chat-input input {
-  flex-grow: 1;
+.chat-input textarea {
+  flex: 1; /* Lar input-feltet ta opp mest mulig plass */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 14px;
-  padding-right: 40px; /* Gir plass til send-knappen */
+  margin-right: 10px;
+  font-family: inherit; /* Bruk samme font som resten av UI-et */
+  font-weight: normal; /* Sikre at den ikke blir for tynn eller tykk */
 }
 
 .chat-input button {
@@ -96,7 +106,6 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-left: -45px;
   color: white;
   cursor: pointer;
   font-size: 16px;
@@ -106,33 +115,79 @@
 }
 
 .consent-buttons{
-  display: grid;
-  grid-auto-flow: column;
-  gap: 10px;
-  margin: 10px;
-  text-align: center;
+  display: flex; /* Bruker flexbox */
+  justify-content: center; /* Sentrerer knappene horisontalt */
+  align-items: center; /* Sentrerer knappene vertikalt */
+  gap: 15px; /* Avstand mellom knappene */
+  margin: 20px auto; /* Sørger for at containeren også er sentrert */
+  width: fit-content; /* Hindrer at containeren blir for bred */
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.accept{
+.accept, .decline {
   background-color: white;
-  padding: 15px;
+  padding: 10px 15px;
   border-radius: 10px;
+  border: 2px solid black;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
 }
 
-.decline{
-  background-color: white;
-  padding: 15px;
-  border-radius: 10px;
+.accept:hover, .decline:hover {
+  background-color: #ff5100;
+}
+.chat-message {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Avstand mellom bilde og tekst */
 }
 
-.accept:hover{
-  background-color:#ddd;
+.bot-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+/* Bot-meldinger */
+.chat-message.bot {
+  justify-content: flex-start;
+}
+/* Bruker-meldinger */
+.chat-message.user {
+  justify-content: flex-end;
+}
+.bot-avatar-placeholder {
+  width: 10px; /* Samme bredde som bot-avatar */
+  height: 35px;
+  visibility: hidden; /* Holder plassen, men skjuler elementet */
+}
+.typing-bubble {
+  margin-left: 20px;
+  display: flex;
+  gap: 4px;
+  padding: 10px;
+  background: #e0e0e0;
+  border-radius: 15px;
+  width: 30px;
+  align-self: flex-start;
 }
 
-.decline:hover{
-  background-color: #ddd;
+.typing-bubble span {
+  width: 8px;
+  height: 8px;
+  background: gray;
+  border-radius: 50%;
+  animation: typingAnimation 1.5s infinite ease-in-out;
+}
+
+.typing-bubble span:nth-child(1) { animation-delay: 0s; }
+.typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
+.typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingAnimation {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-5px); }
 }
