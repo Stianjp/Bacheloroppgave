@@ -24,16 +24,18 @@ router.post("/", async (req, res) => {
       Du er en AI-assistent som hjelper folk med karriereveiledning.
       En bruker har gitt følgende informasjon:
       
-      - Jobbsituasjon: ${jobStatus}
-      - Mål: ${goal}
+        - Jobbstatus: ${jobStatus}
+        - Mål: ${goal}
       
-      Basert på denne informasjonen skal du kategorisere brukeren i én av følgende grupper:
+      hvis jobbstatus til brukeren søker jobb er naturligvis svaret 'a' med mindre det er motivasjonen som er problemet
+      Basert på målet og nåværende jobbstatus til brukeren skal du kategorisere brukeren i én av følgende grupper:
       a: Jobbsøking
       b: Bytte karriere
       c: Karriereutvikling
       d: Finne sin motivasjon
+      e: er du usikker retuner e 
       
-      **Du skal kun returnere én enkelt bokstav** (a, b, c eller d) uten noe annen tekst.
+      **Du skal kun returnere én enkelt bokstav** (a, b, c, d eller e) uten noe annen tekst.
     `;
 
     const completion = await openai.chat.completions.create({
@@ -44,7 +46,7 @@ router.post("/", async (req, res) => {
     const category = completion.choices[0].message.content.trim();
 
     // Sjekk at GPT faktisk returnerer en gyldig bokstav
-    if (!["a", "b", "c", "d"].includes(category)) {
+    if (!["a", "b", "c", "d", "e"].includes(category)) {
       return res.status(400).json({ error: "GPT returnerte en ugyldig kategori." });
     }
 
