@@ -49,6 +49,7 @@
 
 .chat-bubble {
   margin: 5px 0;
+  overflow-wrap: anywhere;  /* Fits all possible lenght of content inside the box */
 }
 
 .chat-bubble.bot {
