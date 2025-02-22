@@ -34,7 +34,6 @@
 .chatbot-messages {
   flex-grow: 1; /* This makes the chat messages area take up remaining space */
   overflow-y: auto;   /* Enables vertical scrolling */
-  padding: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -49,26 +48,49 @@
 }
 
 .chat-bubble {
-  max-width: 80%;
-  padding: 10px;
-  border-radius: 15px;
   margin: 5px 0;
 }
 
 .chat-bubble.bot {
   background-color: #e0e0e0;
   color: #333;
-  align-self: flex-start;
-  padding: 10px;
+  float: left;
+  position: relative;
+  padding: 15px;
   border-radius: 15px;
   max-width: 80%;
+}
+
+/* Creating figures on top of eachother for a curved tip illusion to the bottom left corner*/
+.chat-bubble.bot::before { 
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: -6px;
+  height: 20px;
+  width: 20px;
+  background: #e0e0e0;
+  border-bottom-right-radius: 15px;
+}
+.chat-bubble.bot::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 22px;
+  background: white;
+  border-bottom-right-radius: 10px;
 }
 
 .chat-bubble.user {
   background-color: #ff5100;
   color: white;
-  align-self: flex-end;
-  padding: 10px;
+  float: right;
+  position: relative;
+  padding: 15px;
   border-radius: 15px;
   max-width: 80%;
   margin-right: 15px;
@@ -76,6 +98,31 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Creating figures on top of eachother for a curved tip illusion to the bottom right corner*/
+.chat-bubble.user::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  right: -6px;
+  height: 20px;
+  width: 20px;
+  background: linear-gradient(to bottom, #ff5100 0%, #ff5100 80%);
+  background-attachment: fixed;
+  border-bottom-left-radius: 15px;
+}
+.chat-bubble.user::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 22px;
+  background: white;
+  border-bottom-left-radius: 10px;
 }
 
 /* Inputfelt */
