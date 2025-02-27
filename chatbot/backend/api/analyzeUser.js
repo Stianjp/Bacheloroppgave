@@ -1,3 +1,5 @@
+// Kan slettes brukes ikke
+
 import express from "express";
 import OpenAI from "openai";
 import fs from "fs";
@@ -39,7 +41,7 @@ router.post("/", async (req, res) => {
     `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       messages: [{ role: "system", content: prompt }]
     });
 
