@@ -1,7 +1,8 @@
 /* Hovedcontainer */
 .chat-container {
-  width: 600px;
-  height: 700px; /* Set a fixed height for the entire chat container */
+  width: 90%; /* Bruk prosent for responsiv bredde */
+  max-width: 600px;
+  height: 80vh; /* Gjør høyden mer fleksibel */
   margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -10,6 +11,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative; /* Sikrer at innholdet ikke skjules */
 }
 
 /* Header med logo og dato */
@@ -50,6 +52,7 @@
 .chat-bubble {
   margin: 5px 0;
   overflow-wrap: anywhere;  /* Fits all possible lenght of content inside the box */
+  max-width: 75%;
 }
 
 .chat-bubble.bot {
@@ -165,11 +168,10 @@
 .consent-buttons{
   display: flex; /* Bruker flex */
   justify-content: center; /* Sentrerer knappene horisontalt */
-  /*align-items:center; /* Sentrerer knappene vertikalt ----- GJØR INGENTING*/
   gap: 15px; /* Avstand mellom knappene */
   margin: 20px auto; /* Sørger for at containeren også er sentrert */
   width: fit-content; /* Hindrer at containeren blir for bred */ 
-  margin-bottom: 50%; /* Midtstiller knappene vertikalt på siden */
+  margin-bottom: 30%; /* Midtstiller knappene vertikalt på siden */
 }
 
 .accept, .decline {
@@ -235,4 +237,31 @@
 @keyframes typingAnimation {
   0%, 100% { opacity: 0.3; transform: translateY(0); }
   50% { opacity: 1; transform: translateY(-5px); }
+}
+/* RESPONSIVITET */
+@media (max-width: 768px) {
+  .chat-container {
+    width: 95%;
+    height: 85vh;
+  }
+  
+  .chat-bubble {
+    max-width: 85%;
+  }
+  
+  .logo {
+    width: 70%;
+  }
+  
+  .chat-input button {
+    width: 35px;
+    height: 35px;
+  }
+  .chat-input textarea {
+    font-size: 12px; /* Justert fontstørrelse for mindre skjermer */
+  }
+  
+  .chatbot-messages {
+    padding: 5px; /* Redusert padding for bedre plassutnyttelse */
+  }
 }
