@@ -101,7 +101,7 @@ const Chatbot = () => {
       // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
       if (phase === 1 && newAssistantCount >= 8) {
         // Legg til avslutning på kartleggingen før vi går videre til fase 2
-        botReply = "Takk for at du delte det. Jeg tror vi har kartlagt endel. Nå går vi over til dyp motivasjon.";
+        // botReply = "Takk for at du delte det. Jeg tror vi har kartlagt endel. Nå går vi over til dyp motivasjon.";
 
         // Sett fase til 2
         setPhase(2);
