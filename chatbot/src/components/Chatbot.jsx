@@ -86,7 +86,7 @@ const Chatbot = () => {
       // 1) Bygg hele konversasjonen i GPT-format
       const conversationMessages = buildConversationForGPT([...messages, userMessage]);
 
-      // 2) Velg prompt basert på phase
+      // 2) Velg prompt basert på fase
       let systemPrompt = phaseOnePrompt;
       if (phase === 2) {
         systemPrompt = phaseTwoPrompt;
@@ -98,16 +98,12 @@ const Chatbot = () => {
       // 4) TELL antall assistent-svar i denne fasen
       const newAssistantCount = countAssistantMessages([...messages, { sender: "bot", text: botReply }], phase);
 
-      setAssistantQuestionCount(newAssistantCount);
-
       // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
-      // Du kan justere tallet selv, f.eks. 5, 6, 8
-      if (phase === 1 && newAssistantCount >= 5) {
-        // (Valgfritt) lagre data
-        await saveUserData(consent, { /* eventuelt brukerdata hvis du vil */ });
+      if (phase === 1 && newAssistantCount >= 8) {
+        // Legg til avslutning på kartleggingen før vi går videre til fase 2
+        botReply = "Takk for at du delte det, Dennis. Jeg tror vi har kartlagt endel. Nå går vi over til dyp motivasjon.";
 
-        // Gi GPT litt hint i svaret om at vi nå bytter fase
-        botReply += "\n\nJeg tror vi har kartlagt endel. Nå går vi over til dyp motivasjon.";
+        // Sett fase til 2
         setPhase(2);
       }
 
@@ -213,14 +209,12 @@ function buildConversationForGPT(allMessages) {
 
 /**
  * Teller hvor mange meldinger "bot" har kommet med i gjeldende fase.
- * Du kan velge å differensiere på om meldingen hører til fase 1 eller fase 2,
- * hvis du vil være helt presis. 
+ * Du kan velge å differensiere på om meldingen ble postet i currentPhase. Men i en enkel variant:
  */
 function countAssistantMessages(allMessages, currentPhase) {
   let count = 0;
   for (const msg of allMessages) {
     if (msg.sender === "bot") {
-      // Evt. sjekk om meldingen ble postet i currentPhase. Men i en enkel variant:
       count++;
     }
   }
