@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   initialMessage,
   phaseOnePrompt,
@@ -12,8 +12,6 @@ import { askChatbot } from "../utils/langchainChatbot"; // Tilpass stien
 import "../styles/Chatbot.css";
 import logo from "../media/logo.png";
 import miniLogo from "../media/MH_logo.png";
-import { useCallback } from "react"; // 🚨 Husk å importere
-
 
 /*
   Chatbot.jsx:
@@ -38,9 +36,6 @@ const Chatbot = () => {
   // Fase-styring: 1 = kort kartlegging, 2 = dyp motivasjon
   const [phase, setPhase] = useState(1);
 
-  // Teller antall meldinger fra GPT i hver fase
-  const [assistantQuestionCount, setAssistantQuestionCount] = useState(0);
-
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -57,96 +52,82 @@ const Chatbot = () => {
     }
   }, [messages]);
 
+  // Lagre meldinger når de oppdateres, hvis brukeren har gitt samtykke
+  useEffect(() => {
+    if (consent) {
+      saveData(consent, messages);
+    }
+  }, [messages, consent]);
+
   // Samtykke-håndtering
   const handleConsent = (userConsent) => {
     setConsent(userConsent);
     const userMsg = userConsent ? "Ja, jeg godtar." : "Nei, jeg ønsker ikke lagring.";
-    setMessages((prev) => [
-      ...prev,
+    const newMessages = [
+      ...messages,
       { sender: "user", text: userMsg },
       { sender: "bot", text: "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?" },
-    ]);
-
-    // Kall saveData-funksjonen hvis brukeren gir samtykke
-    if (userConsent) {
-      saveData(userConsent, messages);
-    }
+    ];
+    setMessages(newMessages);
   };
 
-  // Lagre hver melding i backend
-  const saveConversation = useCallback(async (messages) => {
-    if (consent) { // Kun lagre hvis brukeren har samtykket
-      await saveData(consent, messages);
-    }
-  }, [consent]); // 🚨 Nå er saveConversation stabil
-  
-  // Kall denne funksjonen hver gang en ny melding legges til
-  useEffect(() => {
-    saveConversation(messages);
-  }, [messages, saveConversation]); // 🚨 Nå kan den trygt være i dependency-arrayet
-  
-  // Kall denne funksjonen hver gang en melding legges til
-  useEffect(() => {
-    saveConversation(messages);
-  }, [messages]);
-
   // Send melding
-const sendMessage = async () => {
-  if (!input.trim()) return;
-  setLoading(true);
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    setLoading(true);
 
-  // Legg til brukermelding
-  const userMessage = { sender: "user", text: input.trim() };
-  setMessages((prev) => [...prev, userMessage]);
-  setInput("");
-  inputRef.current.style.height = "30px";
+    // Legg til brukermelding
+    const userMessage = { sender: "user", text: input.trim() };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    inputRef.current.style.height = "30px";
 
-  setIsTyping(true);
+    setIsTyping(true);
 
-  // Vent litt og kall GPT
-  setTimeout(async () => {
-    let botReply = "";
+    // Vent litt og kall GPT
+    setTimeout(async () => {
+      let botReply = "";
 
-    // 1) Bygg hele konversasjonen i GPT-format
-    const conversationMessages = buildConversationForGPT([...messages, userMessage]);
+      // 1) Bygg hele konversasjonen i GPT-format
+      const conversationMessages = buildConversationForGPT([...messages, userMessage]);
 
-    // 2) Velg prompt basert på fase
-    let systemPrompt = phaseOnePrompt;
-    if (phase === 2) {
-      systemPrompt = phaseTwoPrompt;
-    }
-
-    // 3) Kall GPT
-    botReply = await askChatbot(conversationMessages, systemPrompt);
-
-    // 4) TELL antall assistent-svar i denne fasen
-    const newAssistantCount = countAssistantMessages([...messages, { sender: "bot", text: botReply }], phase);
-
-    // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
-    if (phase === 1 && newAssistantCount >= 5) {
-      const hasEnoughData = messages.some(msg => msg.sender === "user" && msg.text.length > 20);
-      
-      if (hasEnoughData) {
-        setMessages(prev => [
-          ...prev,
-          { sender: "bot", text: "Ok, nå har vi snakket litt om hvor du er. La oss gå litt dypere – hva er det egentlig du vil?" }
-        ]);
-        setPhase(2);
-      } else {
-        setMessages(prev => [
-          ...prev,
-          { sender: "bot", text: "Jeg vil forstå litt mer før vi går videre. Kan du utdype litt på det vi snakket om sist?" }
-        ]);
+      // 2) Velg prompt basert på fase
+      let systemPrompt = phaseOnePrompt;
+      if (phase === 2) {
+        systemPrompt = phaseTwoPrompt;
       }
-    }
 
-    // 6) Oppdater meldinger med GPT-svar
-    setMessages((prev) => [...prev, { sender: "bot", text: botReply }]);
+      // 3) Kall GPT
+      botReply = await askChatbot(conversationMessages, systemPrompt);
 
-    setIsTyping(false);
-    setLoading(false);
-  }, 500);
-};
+      // 4) TELL antall assistent-svar i denne fasen
+      const newAssistantCount = countAssistantMessages([...messages, { sender: "bot", text: botReply }], phase);
+
+      // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
+      if (phase === 1 && newAssistantCount >= 5) {
+        const hasEnoughData = messages.some(msg => msg.sender === "user" && msg.text.length > 20);
+        
+        if (hasEnoughData) {
+          setMessages(prev => [
+            ...prev,
+            { sender: "bot", text: "Ok, nå har vi snakket litt om hvor du er. La oss gå litt dypere – hva er det egentlig du vil?" }
+          ]);
+          setPhase(2);
+        } else {
+          setMessages(prev => [
+            ...prev,
+            { sender: "bot", text: "Jeg vil forstå litt mer før vi går videre. Kan du utdype litt på det vi snakket om sist?" }
+          ]);
+        }
+      }
+
+      // 6) Oppdater meldinger med GPT-svar
+      setMessages((prev) => [...prev, { sender: "bot", text: botReply }]);
+
+      setIsTyping(false);
+      setLoading(false);
+    }, 500);
+  };
 
   // Autoscroll
   const scrollToBottom = () => {

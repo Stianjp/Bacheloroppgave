@@ -6,29 +6,22 @@ const API_URL = "http://localhost:5001"; // 🚨 Er dette riktig backend-url?
 
 export const saveData = async (consent, messages) => {
   try {
-      const response = await fetch("http://localhost:5001/api/saveData", { // 🚨 Bruk '/api/saveData'!
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ consent, data: messages }),
-      });
-
-      const result = await response.json();
-      console.log("Lagringsresultat:", result);
+    const response = await axios.post(`${API_URL}/api/saveData`, {
+      consent,
+      data: messages,
+    });
+    console.log("Lagringsresultat:", response.data);
   } catch (error) {
-      console.error("Feil ved lagring:", error);
+    console.error("Feil ved lagring:", error);
   }
 };
 
 export const clearBackendData = async () => {
   try {
-      const response = await fetch("http://localhost:5001/api/clearData", { // 🚨 Bruk riktig sti!
-          method: "DELETE",
-      });
-
-      const result = await response.json();
-      console.log("Sletting av data:", result);
+    const response = await axios.delete(`${API_URL}/api/clearData`);
+    console.log("Sletting av data:", response.data);
   } catch (error) {
-      console.error("Feil ved sletting av data:", error);
+    console.error("Feil ved sletting av data:", error);
   }
 };
 
