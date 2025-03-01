@@ -22,7 +22,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json()); // 🚨 VIKTIG! Uten dette kan ikke Express lese JSON-body
+app.use("/api/clearData", saveDataRouter); // 🚨 Sletter data ved refresh
 
 // Hvis du ikke bruker openai direkte i server.js kan du fjerne dette:
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
