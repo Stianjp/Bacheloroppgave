@@ -7,6 +7,9 @@ const filePath = path.join("data", "userData.json");
 
 // **Lagre brukerdata i JSON-fil**
 router.post("/", (req, res) => {
+  console.log("saveData endpoint called");
+  console.log("Request body:", req.body);
+
   try {
     const { consent, data } = req.body;
 
@@ -39,6 +42,23 @@ router.post("/", (req, res) => {
   } catch (error) {
     console.error("❌ Feil ved lagring av data:", error);
     res.status(500).json({ error: "Kunne ikke lagre data." });
+  }
+});
+
+router.delete("/", (req, res) => {
+  try {
+      console.log("clearData endpoint called");
+
+      const filePath = path.join("data", "userData.json");
+
+      if (fs.existsSync(filePath)) {
+          fs.writeFileSync(filePath, "[]"); // Tøm filen
+      }
+
+      res.json({ message: "✅ Data fjernet fra JSON-fil." });
+  } catch (error) {
+      console.error("❌ Feil ved sletting av data:", error);
+      res.status(500).json({ error: "Kunne ikke slette data." });
   }
 });
 

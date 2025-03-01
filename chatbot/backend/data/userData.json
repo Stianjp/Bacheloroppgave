@@ -1,1 +1,39 @@
-[]
+[
+  {
+    "0": {
+      "sender": "bot",
+      "text": "\nHei, hyggelig å møte deg! Jeg er her for å hjelpe deg med å reflektere over dine karrieremål og hvordan du kan komme dit. Før vi begynner, kan du fortelle meg litt om din nåværende jobb eller studium?\n"
+    },
+    "timestamp": "2025-03-01T11:54:46.566Z"
+  },
+  {
+    "0": {
+      "sender": "bot",
+      "text": "\nHei, hyggelig å møte deg! Jeg er her for å hjelpe deg med å reflektere over dine karrieremål og hvordan du kan komme dit. Før vi begynner, kan du fortelle meg litt om din nåværende jobb eller studium?\n"
+    },
+    "1": {
+      "sender": "user",
+      "text": "Ja, jeg godtar."
+    },
+    "2": {
+      "sender": "bot",
+      "text": "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?"
+    },
+    "timestamp": "2025-03-01T11:54:46.572Z"
+  },
+  {
+    "0": {
+      "sender": "bot",
+      "text": "\nHei, hyggelig å møte deg! Jeg er her for å hjelpe deg med å reflektere over dine karrieremål og hvordan du kan komme dit. Før vi begynner, kan du fortelle meg litt om din nåværende jobb eller studium?\n"
+    },
+    "1": {
+      "sender": "user",
+      "text": "Ja, jeg godtar."
+    },
+    "2": {
+      "sender": "bot",
+      "text": "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?"
+    },
+    "timestamp": "2025-03-01T11:54:46.574Z"
+  }
+]

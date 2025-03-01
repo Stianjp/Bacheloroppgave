@@ -1,27 +1,34 @@
 // chatbotApi.js
 
-const API_BASE_URL = "http://localhost:5001/api";
+import axios from "axios";
 
-// 1) Tømmer all data i backend
-export const clearBackendData = async () => {
+const API_URL = "http://localhost:5001"; // 🚨 Er dette riktig backend-url?
+
+export const saveData = async (consent, messages) => {
   try {
-    await fetch(`${API_BASE_URL}/clearData`, { method: "POST" });
+      const response = await fetch("http://localhost:5001/api/saveData", { // 🚨 Bruk '/api/saveData'!
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ consent, data: messages }),
+      });
+
+      const result = await response.json();
+      console.log("Lagringsresultat:", result);
   } catch (error) {
-    console.error("❌ Feil ved tømming av data:", error);
+      console.error("Feil ved lagring:", error);
   }
 };
 
-// 2) Lagrer brukerdata i backend (hvis samtykke)
-export const saveUserData = async (consent, userData) => {
-  if (!consent) return;
+export const clearBackendData = async () => {
   try {
-    await fetch(`${API_BASE_URL}/saveData`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ consent, data: userData }),
-    });
+      const response = await fetch("http://localhost:5001/api/clearData", { // 🚨 Bruk riktig sti!
+          method: "DELETE",
+      });
+
+      const result = await response.json();
+      console.log("Sletting av data:", result);
   } catch (error) {
-    console.error("❌ Feil ved lagring av data:", error);
+      console.error("Feil ved sletting av data:", error);
   }
 };
 
