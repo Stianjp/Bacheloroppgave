@@ -9,6 +9,7 @@ import "../styles/Chatbot.css";
 import { askChatbot } from "../utils/langchainChatbot";
 import logo from "../media/logo.png";
 import miniLogo from "../media/MH_logo.png";
+import { IoClose } from "react-icons/io5";
 
 /*
   Chatbot.jsx:
@@ -30,6 +31,8 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [chatId, setChatId] = useState(null); // ID for samtalen
+  const [hoverText, setHoverText] = useState("Klikk for å kopiere ID");
+  const [hoverXbottom, setHoverXbottom] = useState("Klikk for å avslutte samtalen");
 
   // Fase-styring: 1 = kort kartlegging, 2 = dyp motivasjon
   const [phase, setPhase] = useState(1);
@@ -183,6 +186,14 @@ const Chatbot = () => {
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
+  // Kopier chat-ID til utklippstavlen
+  const copyChatId = () => {
+    navigator.clipboard.writeText(chatId).then(() => {
+      setHoverText("ID kopiert!");
+      setTimeout(() => setHoverText("Klikk for å kopiere ID"), 2000);
+    });
+  };
+
   return (
     <div className="chat-container">
       <header className="chat-header">
@@ -190,6 +201,16 @@ const Chatbot = () => {
         <p className="chat-date">
           {new Date().toLocaleDateString("no-NO", { weekday: "long", day: "numeric", month: "long" })}
         </p>
+        {chatId && (
+          <p
+            className="chat-id"
+            onClick={copyChatId}
+            title={hoverText}
+            style={{ cursor: "pointer" }}
+          >
+            Chat ID: <span style={{textDecoration: "underline" }}>{chatId}</span> 
+          </p>
+        )}
       </header>
 
       <div className="chatbot-messages">
@@ -244,7 +265,11 @@ const Chatbot = () => {
           <button onClick={sendMessage} disabled={loading}>
             ➤
           </button>
-          <button onClick={finishChat}>Avslutt samtale</button>
+          <button 
+          onClick={finishChat}
+          title={hoverXbottom}>
+            <IoClose />
+            </button>
         </div>
       )}
     </div>
