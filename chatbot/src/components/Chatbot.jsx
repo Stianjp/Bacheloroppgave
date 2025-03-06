@@ -123,14 +123,6 @@ const Chatbot = () => {
       const newAssistantCount = countAssistantMessages([...messages, { sender: "bot", text: botReply }], phase);
 
       // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
-<<<<<<< HEAD
-      if (phase === 1 && newAssistantCount >= 8) {
-        // Legg til avslutning på kartleggingen før vi går videre til fase 2
-        botReply = "Takk for at du delte det. Jeg tror vi har kartlagt endel. Nå går vi over til dyp motivasjon.";
-
-        // Sett fase til 2
-        setPhase(2);
-=======
       if (phase === 1 && newAssistantCount >= 5) {
         const hasEnoughData = messages.some(msg => msg.sender === "user" && msg.text.length > 20);
         
@@ -146,7 +138,6 @@ const Chatbot = () => {
             { sender: "bot", text: "Jeg vil forstå litt mer før vi går videre. Kan du utdype litt på det vi snakket om sist?" }
           ]);
         }
->>>>>>> origin/Stian28.02
       }
 
       // 6) Oppdater meldinger med GPT-svar

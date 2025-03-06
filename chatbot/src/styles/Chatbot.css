@@ -196,12 +196,8 @@
 .bot-avatar {
   width: 35px;
   height: 35px;
-  border-radius: 50%;
-<<<<<<< HEAD
-  margin-left: 1%;
-=======
+  border-radius:s 50%;
   margin-left: 2px;
->>>>>>> origin/Stian28.02
 }
 /* Bot-meldinger */
 .chat-message.bot {
