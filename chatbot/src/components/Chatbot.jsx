@@ -77,8 +77,8 @@ const Chatbot = () => {
   // Samtykke-håndtering
   const handleConsent = (userConsent) => {
     setConsent(userConsent);
-    const userMsg = { sender: "user", text: userConsent ? "Ja, jeg godtar." : "Nei, jeg ønsker ikke lagring." };
-    const botMsg = { sender: "bot", text: "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?" };
+    const userMsg = { sender: "user", text: userConsent ? "Ja, jeg samtykker." : "Nei, jeg ønsker ikke lagring." };
+    const botMsg = { sender: "bot", text: "Tusen takk! Mitt navn er Chatbot, hva heter du?" };
 
     const newMessages = [...messages, userMsg, botMsg];
     setMessages(newMessages);
