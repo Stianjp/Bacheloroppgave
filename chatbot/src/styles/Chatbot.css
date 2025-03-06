@@ -164,6 +164,7 @@
   justify-content: center;
 }
 
+
 .consent-buttons{
   display: flex; /* Bruker flex */
   justify-content: center; /* Sentrerer knappene horisontalt */
@@ -196,7 +197,11 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
+<<<<<<< HEAD
   margin-left: 1%;
+=======
+  margin-left: 2px;
+>>>>>>> origin/Stian28.02
 }
 /* Bot-meldinger */
 .chat-message.bot {
