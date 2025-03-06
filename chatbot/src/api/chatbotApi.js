@@ -1,27 +1,27 @@
 // chatbotApi.js
 
-const API_BASE_URL = "http://localhost:5001/api";
+import axios from "axios";
 
-// 1) Tømmer all data i backend
-export const clearBackendData = async () => {
+const API_URL = "http://localhost:5001"; // 🚨 Er dette riktig backend-url?
+
+export const saveData = async (consent, messages) => {
   try {
-    await fetch(`${API_BASE_URL}/clearData`, { method: "POST" });
+    const response = await axios.post(`${API_URL}/api/saveData`, {
+      consent,
+      data: messages,
+    });
+    console.log("Lagringsresultat:", response.data);
   } catch (error) {
-    console.error("❌ Feil ved tømming av data:", error);
+    console.error("Feil ved lagring:", error);
   }
 };
 
-// 2) Lagrer brukerdata i backend (hvis samtykke)
-export const saveUserData = async (consent, userData) => {
-  if (!consent) return;
+export const clearBackendData = async () => {
   try {
-    await fetch(`${API_BASE_URL}/saveData`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ consent, data: userData }),
-    });
+    const response = await axios.delete(`${API_URL}/api/clearData`);
+    console.log("Sletting av data:", response.data);
   } catch (error) {
-    console.error("❌ Feil ved lagring av data:", error);
+    console.error("Feil ved sletting av data:", error);
   }
 };
 

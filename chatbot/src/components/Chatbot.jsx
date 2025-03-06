@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
   initialMessage,
   phaseOnePrompt,
   phaseTwoPrompt,
-} from "../data/chatbotPrompts"; // Tilpass stien
-import {
-  clearBackendData,
-  saveUserData, // valgfritt om du vil lagre data
-} from "../api/chatbotApi"; // Tilpass hvis du ønsker
-import { askChatbot } from "../utils/langchainChatbot"; // Tilpass stien
+} from "../data/chatbotPrompts";
 import "../styles/Chatbot.css";
+import { askChatbot } from "../utils/langchainChatbot";
 import logo from "../media/logo.png";
 import miniLogo from "../media/MH_logo.png";
+import { IoClose } from "react-icons/io5";
 
 /*
   Chatbot.jsx:
@@ -32,20 +30,31 @@ const Chatbot = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [chatId, setChatId] = useState(null); // ID for samtalen
+  const [hoverText, setHoverText] = useState("Klikk for å kopiere ID");
+  const [hoverXbottom, setHoverXbottom] = useState("Klikk for å avslutte samtalen");
 
   // Fase-styring: 1 = kort kartlegging, 2 = dyp motivasjon
   const [phase, setPhase] = useState(1);
 
-  // Teller antall meldinger fra GPT i hver fase
-  const [assistantQuestionCount, setAssistantQuestionCount] = useState(0);
-
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Tøm backend-data ved start
   useEffect(() => {
-    clearBackendData();
+    clearData(); // Tøm userData.json når siden lastes inn
+    startNewChat(); // Start en ny samtale når chatboten lastes inn
   }, []);
+
+  // Start en ny samtale og hent en ID
+  const startNewChat = async () => {
+    try {
+      const response = await axios.post("http://localhost:5001/saveData/start");
+      setChatId(response.data.chatId);
+      console.log("Ny samtale startet med ID:", response.data.chatId);
+    } catch (error) {
+      console.error("❌ Feil ved oppstart av chat:", error);
+    }
+  };
 
   // Autoscroll / autofokus
   useEffect(() => {
@@ -55,15 +64,29 @@ const Chatbot = () => {
     }
   }, [messages]);
 
+  // Tøm userData.json
+  const clearData = async () => {
+    try {
+      await axios.post("http://localhost:5001/api/clearData");
+      console.log("userData.json tømt");
+    } catch (error) {
+      console.error("❌ Feil ved tømming av userData.json:", error);
+    }
+  };
+
   // Samtykke-håndtering
   const handleConsent = (userConsent) => {
     setConsent(userConsent);
-    const userMsg = userConsent ? "Ja, jeg godtar." : "Nei, jeg ønsker ikke lagring.";
-    setMessages((prev) => [
-      ...prev,
-      { sender: "user", text: userMsg },
-      { sender: "bot", text: "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?" },
-    ]);
+    const userMsg = { sender: "user", text: userConsent ? "Ja, jeg godtar." : "Nei, jeg ønsker ikke lagring." };
+    const botMsg = { sender: "bot", text: "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?" };
+
+    const newMessages = [...messages, userMsg, botMsg];
+    setMessages(newMessages);
+
+    if (userConsent) {
+      saveMessage(userMsg);
+      saveMessage(botMsg);
+    }
   };
 
   // Send melding
@@ -74,6 +97,7 @@ const Chatbot = () => {
     // Legg til brukermelding
     const userMessage = { sender: "user", text: input.trim() };
     setMessages((prev) => [...prev, userMessage]);
+    saveMessage(userMessage);
     setInput("");
     inputRef.current.style.height = "30px";
 
@@ -109,10 +133,34 @@ const Chatbot = () => {
 
       // 6) Oppdater meldinger med GPT-svar
       setMessages((prev) => [...prev, { sender: "bot", text: botReply }]);
+      saveMessage({ sender: "bot", text: botReply });
 
       setIsTyping(false);
       setLoading(false);
     }, 500);
+  };
+
+  // Lagre en melding til backend
+  const saveMessage = async (message) => {
+    try {
+      await axios.post("http://localhost:5001/saveData/save", {
+        chatId,
+        sender: message.sender,
+        text: message.text,
+      });
+    } catch (error) {
+      console.error("❌ Feil ved lagring av melding:", error);
+    }
+  };
+
+  // Avslutt samtale og lagre den
+  const finishChat = async () => {
+    try {
+      const response = await axios.post("http://localhost:5001/saveData/finish", { chatId });
+      console.log(response.data.message, "Fil lagret på:", response.data.filePath);
+    } catch (error) {
+      console.error("❌ Feil ved lagring av full samtale:", error);
+    }
   };
 
   // Autoscroll
@@ -129,6 +177,14 @@ const Chatbot = () => {
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
+  // Kopier chat-ID til utklippstavlen
+  const copyChatId = () => {
+    navigator.clipboard.writeText(chatId).then(() => {
+      setHoverText("ID kopiert!");
+      setTimeout(() => setHoverText("Klikk for å kopiere ID"), 2000);
+    });
+  };
+
   return (
     <div className="chat-container">
       <header className="chat-header">
@@ -136,6 +192,16 @@ const Chatbot = () => {
         <p className="chat-date">
           {new Date().toLocaleDateString("no-NO", { weekday: "long", day: "numeric", month: "long" })}
         </p>
+        {chatId && (
+          <p
+            className="chat-id"
+            onClick={copyChatId}
+            title={hoverText}
+            style={{ cursor: "pointer" }}
+          >
+            Chat ID: <span style={{textDecoration: "underline" }}>{chatId}</span> 
+          </p>
+        )}
       </header>
 
       <div className="chatbot-messages">
@@ -190,6 +256,11 @@ const Chatbot = () => {
           <button onClick={sendMessage} disabled={loading}>
             ➤
           </button>
+          <button 
+          onClick={finishChat}
+          title={hoverXbottom}>
+            <IoClose />
+            </button>
         </div>
       )}
     </div>
