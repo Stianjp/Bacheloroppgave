@@ -77,8 +77,8 @@ const Chatbot = () => {
   // Samtykke-håndtering
   const handleConsent = (userConsent) => {
     setConsent(userConsent);
-    const userMsg = { sender: "user", text: userConsent ? "Ja, jeg godtar." : "Nei, jeg ønsker ikke lagring." };
-    const botMsg = { sender: "bot", text: "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?" };
+    const userMsg = { sender: "user", text: userConsent ? "Ja, jeg samtykker." : "Nei, jeg ønsker ikke lagring." };
+    const botMsg = { sender: "bot", text: "Tusen takk! Mitt navn er Chatbot, hva heter du?" };
 
     const newMessages = [...messages, userMsg, botMsg];
     setMessages(newMessages);
@@ -123,21 +123,9 @@ const Chatbot = () => {
       const newAssistantCount = countAssistantMessages([...messages, { sender: "bot", text: botReply }], phase);
 
       // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
-      if (phase === 1 && newAssistantCount >= 5) {
-        const hasEnoughData = messages.some(msg => msg.sender === "user" && msg.text.length > 20);
-        
-        if (hasEnoughData) {
-          setMessages(prev => [
-            ...prev,
-            { sender: "bot", text: "Ok, nå har vi snakket litt om hvor du er. La oss gå litt dypere – hva er det egentlig du vil?" }
-          ]);
-          setPhase(2);
-        } else {
-          setMessages(prev => [
-            ...prev,
-            { sender: "bot", text: "Jeg vil forstå litt mer før vi går videre. Kan du utdype litt på det vi snakket om sist?" }
-          ]);
-        }
+      if (phase === 1 && newAssistantCount >= 8) {
+        // Sett fase til 2
+        setPhase(2);
       }
 
       // 6) Oppdater meldinger med GPT-svar
