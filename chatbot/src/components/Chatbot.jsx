@@ -258,7 +258,7 @@ const Chatbot = () => {
       {chatEnded && (
         <div className="restart-chat">
           <button className="restart-button" onClick={restartChat}>
-                🔄 Start ny samtale
+                Start ny samtale
           </button>
         </div>
       )}
