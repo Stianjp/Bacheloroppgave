@@ -150,14 +150,43 @@ const Chatbot = () => {
     }
   };
 
+  const [chatEnded, setChatEnded] = useState(false);
+
   // Avslutt samtale og lagre den
   const finishChat = async () => {
+    if (isFinishingChat) return; // Hindre flere trykk
+    setIsFinishingChat(true); // Lås knappen
+
     try {
-      const response = await axios.post("http://localhost:5001/saveData/finish", { chatId });
-      console.log(response.data.message, "Fil lagret på:", response.data.filePath);
+        if (consent === false) {
+            console.log("🚫 Bruker har ikke samtykket. Samtalen slettes.");
+            await axios.delete(`http://localhost:5001/saveData/delete/${chatId}`);
+            console.log("🚫 Samtale slettet siden brukeren ikke ga samtykke.");
+        } else {
+              const response = await axios.post("http://localhost:5001/saveData/finish", { chatId });
+              console.log(response.data.message, "Fil lagret på:", response.data.filePath);
+        }
     } catch (error) {
-      console.error("❌ Feil ved lagring av full samtale:", error);
+          console.error("❌ Feil ved sletting/lagring av samtale:", error);
     }
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "bot", text: "Takk for samtalen!😊 Ha en fin dag videre!" }
+    ]);
+    setChatEnded(true); // Sørg for at knappen vises
+  };
+  // Slett samtalen dersom brukeren ikke samtykket
+  
+  const [isFinishingChat, setIsFinishingChat] = useState(false); // For å hindre dobbelklikk
+
+  // Start en ny samtale fra bunnen av
+  const restartChat = async () => {
+    setChatId(null);
+    setConsent(null);
+    setChatEnded(false); // Tillat meldinger igjen
+    setIsFinishingChat(false); // 🔄 Reset finishChat-knappen
+    setMessages([{ sender: "bot", text: initialMessage }]);
+    startNewChat(); // Start en ny samtale med ny ID
   };
 
   // Autoscroll
@@ -226,6 +255,14 @@ const Chatbot = () => {
         <div ref={messagesEndRef} />
       </div>
 
+      {chatEnded && (
+        <div className="restart-chat">
+          <button className="restart-button" onClick={restartChat}>
+                Start ny samtale
+          </button>
+        </div>
+      )}
+
       {consent === null && (
         <div className="consent-buttons">
           <button className="accept" onClick={() => handleConsent(true)}>Godta</button>
@@ -234,31 +271,33 @@ const Chatbot = () => {
       )}
 
       {consent !== null && (
-        <div className="chat-input">
-          <textarea
-            ref={inputRef}
-            placeholder="Skriv melding her"
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-              }
-            }}
-            disabled={loading}
-            rows={1}
-            style={{ resize: "none", minHeight: "30px", maxHeight: "200px", overflowY: "auto" }}
-          />
-          <button onClick={sendMessage} disabled={loading}>
-            ➤
-          </button>
-          <button 
-          onClick={finishChat}
-          title={hoverXbottom}>
-            <IoClose />
-            </button>
-        </div>
+          <div className="chat-input">
+              <textarea
+                  ref={inputRef}
+                  placeholder="Skriv melding her"
+                  value={input}
+                  onChange={handleInputChange}
+                  onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          if (!chatEnded) sendMessage(); // Kun send hvis chat ikke er avsluttet
+                      }
+                  }}
+                  disabled={loading || chatEnded} // Deaktivert hvis chat er avsluttet
+                  rows={1}
+                  style={{ resize: "none", minHeight: "30px", maxHeight: "200px", overflowY: "auto" }}
+              />
+              <button onClick={sendMessage} disabled={loading || chatEnded}>
+                  ➤
+              </button>
+              <button 
+                  onClick={finishChat} 
+                  title={hoverXbottom}
+                  disabled={isFinishingChat} // Deaktiver knappen etter første trykk
+                  >                         
+                  <IoClose />
+              </button>
+          </div>
       )}
     </div>
   );
