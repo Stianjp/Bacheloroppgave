@@ -152,11 +152,29 @@ const Chatbot = () => {
 
   // Avslutt samtale og lagre den
   const finishChat = async () => {
+      if (consent === false) {
+        console.log("🚫 Bruker har ikke samtykket. Samtalen slettes i stedet for å lagres.");
+        deleteChat(); // Kall funksjonen for å slette chatten
+        return;
+      }
+      try {
+        const response = await axios.post("http://localhost:5001/saveData/finish", { chatId });
+        console.log(response.data.message, "Fil lagret på:", response.data.filePath);
+      } catch (error) {
+        console.error("❌ Feil ved lagring av full samtale:", error);
+      }
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "bot", text: "Takk for samtalen!😊 Ha en fin dag videre!" }
+    ]);
+  };
+  // Slett samtalen dersom brukeren ikke samtykket
+  const deleteChat = async () => {
     try {
-      const response = await axios.post("http://localhost:5001/saveData/finish", { chatId });
-      console.log(response.data.message, "Fil lagret på:", response.data.filePath);
+        await axios.delete(`http://localhost:5001/saveData/delete/${chatId}`);
+        console.log("🚫 Samtale slettet siden brukeren ikke ga samtykke.");
     } catch (error) {
-      console.error("❌ Feil ved lagring av full samtale:", error);
+        console.error("❌ Feil ved sletting av samtale:", error);
     }
   };
 
