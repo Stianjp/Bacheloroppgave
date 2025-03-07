@@ -156,6 +156,10 @@
   justify-content: center;
 }
 
+.chat-input button:hover{
+  background-color: rgb(187, 59, 0);
+}
+
 
 .consent-buttons{
   display: flex; /* Bruker flex */
@@ -230,7 +234,7 @@
 }
 
 .restart-button {
-  background-color: #4caf50;
+  background-color: #ff5100;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -238,11 +242,13 @@
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
 .restart-button:hover {
-  background-color: #45a049;
+  background-color: rgb(187, 59, 0);
 }
+
 
 .typing-bubble span:nth-child(1) { animation-delay: 0s; }
 .typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
