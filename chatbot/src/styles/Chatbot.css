@@ -223,6 +223,26 @@
   border-radius: 50%;
   animation: typingAnimation 1.5s infinite ease-in-out;
 }
+.restart-chat {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.restart-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.restart-button:hover {
+  background-color: #45a049;
+}
 
 .typing-bubble span:nth-child(1) { animation-delay: 0s; }
 .typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
