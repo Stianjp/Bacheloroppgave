@@ -1,1 +1,147 @@
-[]
+[
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Takk for tilbakemeldingen! Da setter vi i gang. Hva heter du?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jana"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Hyggelig å møte deg, Jana. Så, hva driver du med for tiden? Jobber du eller studerer du?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg jobber"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Ok, fortell meg litt om hva du jobber med akkurat nå. Hva slags bransje er du i, og hva går jobben ut på?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg er utvikler"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Så, du er utvikler. Hva slags prosjekter eller teknologier jobber du mest med for tiden?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg er python utvikler"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Så, du jobber med Python. Hva med det språket appellerer mest til deg, og hva slags prosjekter har du vært involvert i?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg bygger prosesser"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Ah, bygge prosesser med Python. Er det spesifikke typer prosesser du fokuserer på, som automatisering eller dataanalyse? Hvordan har arbeidet ditt utviklet seg over tid?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "dataanalyse jeg hr akkurat startet"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Spennende at du har begynt med dataanalyse. Hva motiverte deg til å gå inn i dette feltet, og hva håper du å oppnå?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg liker tekonolgi"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Interessant! Hva er det med teknologi som virkelig fascinerer deg, spesielt innen dataanalyse?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg liker å finne mønster"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Å finne mønstre er en viktig del av dataanalyse. Hva betyr det for deg å kunne identifisere disse mønstrene, og hvordan påvirker det arbeidet ditt som utvikler?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "det gir meg mening med rbeidet mitt"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Å forstå arbeidet ditt som meningsfylt er en sterk motivator. Hvordan vet du at prosessene du bygger har en innvirkning eller skaper verdi?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg jobber for staten"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Interessant. Å jobbe for staten kan innebære at arbeidet ditt har en bred påvirkning. Hva ser du som den største fordelen med å bidra til statlige prosjekter, spesielt med de ferdighetene og interessene du har?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg hjelper menneskeheten"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Det er en meningsfull målsetning å ville hjelpe menneskeheten. Hvordan gir det deg en følelse av selvstendighet og utvikling i din rolle?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg føler jeg forstår de tog hjelper andre"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Det høres ut som en givende opplevelse. Hvordan tror du din evne til å forstå og hjelpe andre kan påvirke din egen læring og vekst i karrieren videre?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg tror det kan gjøre meg til en god sjef"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Så du ser en fremtid der du kanskje vil lede andre. Hvordan ser du for deg å balansere det å være analytisk og strukturert med ønsket om å være en god leder?"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "user",
+    "text": "jeg tenker jeg kan hjelpe andre"
+  },
+  {
+    "chatId": "1741267717228",
+    "sender": "bot",
+    "text": "Så langt har vi utforsket din reise fra en Python-utvikler til en datainteresse og ønske om å hjelpe menneskeheten gjennom arbeidet ditt. Vi har også snakket om hvordan du ser for deg å bruke din analytiske og strukturerte natur i en fremtidig lederrolle.\n\nDine motivasjoner inkluderer ønsket om å lære mer, være selvstendig og å utvikle deg. Egenskapene dine, som å være analytisk, målrettet og strukturert, er avgjørende for både din nåværende rolle og fremtidige ambisjoner.\n\nNår du ser fremover, kanskje det å reflektere mer på hva slags leder du ønsker å være kan gi klarhet. Hvordan vil du bruke dine teknologiske ferdigheter og ditt ønske om å hjelpe andre i denne lederrollen? Det kan være verdt å tenke over hvordan det å utvikle andre kan være en naturlig forlengelse av din egen utvikling. Lykke til på reisen videre!"
+  }
+]
