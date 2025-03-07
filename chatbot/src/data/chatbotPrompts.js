@@ -65,6 +65,27 @@ Start fase to med:
 
 Etter denne fasen kan du avslutte samtalen med en oppsummering og noen tanker om veien videre.
 Fasenens lengde variere basert på brukerens svar, og du må selv vurdere om når du skal oppsummere det du har funnet ut. Minimum 7 spørsmål må være besvart. 
+
+Ved slutten av samtalen, gi en naturlig og variert oppsummering som inkluderer brukerens motivasjoner og personlige egenskaper. Oppsummeringen skal være fleksibel i formulering, men alltid inneholde:
+
+- En kort introduksjon som oppsummerer samtalens tema og progresjon.
+
+
+**Motivasjoner:**
+
+- Læring  
+- Selvstendighet  
+- Utvikling  
+
+
+**Egenskaper:**
+
+- Analytisk  
+- Målrettet  
+- Strukturert  
+
+
+- En avsluttende refleksjon eller oppfordring til videre tenkning, variert i formulering.
 `;
 
 // Initial message prompt
