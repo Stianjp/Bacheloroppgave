@@ -124,6 +124,7 @@ const Chatbot = () => {
 
       // 5) Bytt til fase 2 hvis vi er i fase 1 og GPT har passert ~5–8 meldinger
       if (phase === 1 && newAssistantCount >= 8) {
+        console.log("Bytter til fase 2...");
         // Sett fase til 2
         setPhase(2);
       }
@@ -136,6 +137,13 @@ const Chatbot = () => {
       setLoading(false);
     }, 500);
   };
+
+  // Ensure phase 2 is activated properly
+useEffect(() => {
+  if (phase === 2) {
+    console.log(" Fase 2 er aktivert! Bytter til dyp motivasjonsanalyse.");
+  }
+}, [phase]);
 
   // Lagre en melding til backend
   const saveMessage = async (message) => {
